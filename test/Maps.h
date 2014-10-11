@@ -43,6 +43,7 @@ void setUpMap(std::vector<mapInfo> &map, std::vector<mapInfoPF> &mapPF){ // keep
 		mapPFPF.H = 0;
 		mapPFPF.F = mapPFPF.G + mapPFPF.H;
 		mapPFPF.checked = false;
+		mapPFPF.path = false;
 		mapPF.push_back(mapPFPF);
 	}
 }
@@ -73,15 +74,14 @@ void doPathFind(std::vector<mapInfoPF> &mapPF){
 
 	bool done = false;
 
-	//while(!done){
+	while(!done){
 		int checkAround[8] = { -1, 1, -13, 13, -14, -12, 12, 14 };
 		// respectively: check left, right, above, below, top-left, top-right, bottom-left, bottom-right
 		
-		for(int a = 0; a < 5; a++){ // testing
 		printf("Current Space: ( %i, %i )\nTarget Space: ( %i, %i )\n\n", currentX, currentY, hTargetX, hTargetY);
 
 		for(int i = 0; i < 8; i++){
-			if((mapPF[currentI + checkAround[i]].type == 0) && (!mapPF[currentI + checkAround[i]].checked)){
+			if((mapPF[currentI + checkAround[i]].type == 0) && (mapPF[currentI + checkAround[i]].path == false)){
 				if(mapPF[currentI + checkAround[i]].H == 10)
 					done = true;
 
@@ -93,7 +93,7 @@ void doPathFind(std::vector<mapInfoPF> &mapPF){
 				mapPF[currentI + checkAround[i]].F = mapPF[currentI + checkAround[i]].G + mapPF[currentI + checkAround[i]].H;
 				mapPF[currentI + checkAround[i]].checked = true;
 
-				if(mapPF[currentI + checkAround[i]].F < currentHighF){
+				if((mapPF[currentI + checkAround[i]].F < currentHighF)){
 					currentHighF = mapPF[currentI + checkAround[i]].F;
 					nextI = currentI + checkAround[i];
 				}
@@ -105,8 +105,7 @@ void doPathFind(std::vector<mapInfoPF> &mapPF){
 		currentX = mapPF[currentI].x;
 		currentY = mapPF[currentI].y;
 		currentHighF = 666;
-		}
-	//}
+	}
 }
 
 #endif
