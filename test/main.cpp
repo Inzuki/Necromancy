@@ -14,6 +14,10 @@ int main(){
 	Map map01;
 	map01.setMap(map01_init());
 
+	std::vector<mapInfoPF> map01PF;
+	setUpMap(map01.getMap(), map01PF);
+	doPathFind(map01PF);
+
 	// Initialize Window
 	sf::ContextSettings cSettings;
 	sf::RenderWindow window(sf::VideoMode(650, 750), "Necromancy", sf::Style::Close, cSettings);
@@ -47,8 +51,9 @@ int main(){
 			loadSpriteFromImage(rock_image, rock_text, rock, "Resources/Images/rock.png");
 	// Text
 		sf::Font arial; arial.loadFromFile("Resources/Font/arial.ttf");
-		sf::Text name("", arial);
-		name.setCharacterSize(25);
+		sf::Text text("", arial);
+		text.setCharacterSize(10);
+		text.setColor(sf::Color(255, 255, 255, 100));
 	#pragma endregion
 
 	Player james("Inzuki");
@@ -108,18 +113,52 @@ int main(){
 		window.clear();
 		window.draw(map1);
 		
-		for(std::vector<std::vector<int>>::size_type i = 0; i < map01.getMap().size(); i++){
-			if(map01.getMap()[i].type == 0){
+		for(std::vector<mapInfo>::size_type i = 0; i < map01.getMap().size(); i++){
+			if(map01.getMap()[i].type == 0){ // empty space
 				tile.setPosition((float)map01.getMap()[i].x * 50, 140 + ((float)map01.getMap()[i].y * 50));
 				window.draw(tile);
-			}else if(map01.getMap()[i].type == 1){
+			}else if(map01.getMap()[i].type == 1){ // rock
 				rock.setPosition((float)map01.getMap()[i].x * 50, 140 + ((float)map01.getMap()[i].y * 50));
+				rock.setColor(sf::Color::White);
+				window.draw(rock);
+			}else if(map01.getMap()[i].type == 2){ // test point start
+				rock.setPosition((float)map01.getMap()[i].x * 50, 140 + ((float)map01.getMap()[i].y * 50));
+				rock.setColor(sf::Color::Green);
+				window.draw(rock);
+			}else if(map01.getMap()[i].type == 3){ // test point end
+				rock.setPosition((float)map01.getMap()[i].x * 50, 140 + ((float)map01.getMap()[i].y * 50));
+				rock.setColor(sf::Color::Red);
 				window.draw(rock);
 			}
 		}
+
+		for(int i = 0; i < 104; i++){
+			if((map01PF[i].type == 0) && (map01PF[i].checked == true)){
+				if(map01PF[i].path == true)
+					text.setColor(sf::Color::Blue);
+				else
+					text.setColor(sf::Color(255, 255, 255, 100));
+
+				char textHolder[16];
+				sprintf(textHolder, "F: %i", map01PF[i].F);
+				text.setString(textHolder);
+				text.setPosition((float)map01PF[i].x * 50, 140 + ((float)map01PF[i].y * 50));
+				window.draw(text);
+
+				sprintf(textHolder, "G: %i", map01PF[i].G);
+				text.setString(textHolder);
+				text.setPosition((float)map01PF[i].x * 50, 155 + ((float)map01PF[i].y * 50));
+				window.draw(text);
+
+				sprintf(textHolder, "H: %i", map01PF[i].H);
+				text.setString(textHolder);
+				text.setPosition((float)map01PF[i].x * 50, 170 + ((float)map01PF[i].y * 50));
+				window.draw(text);
+			}
+		}
 		
-		//james.updatePlayer(necroBook);
-		//window.draw(james.draw());
+		// james.updatePlayer(necroBook);
+		// window.draw(james.draw());
 
 		// draw GUI
 		window.draw(bgGUI);

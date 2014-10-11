@@ -8,6 +8,13 @@ struct mapInfo {
 	int type;
 };
 
+struct mapInfoPF {
+	int x, y;
+	int type;
+	int F, G, H;
+	bool checked, path;
+};
+
 class Map {
 	public:
 		Map();
