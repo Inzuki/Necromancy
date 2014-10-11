@@ -5,12 +5,14 @@
 
 #include "Player.h"
 #include "Maps.h"
+#include "Map.h"
 
 void loadSpriteFromTexture(sf::Texture &texture, sf::Sprite &sprite, char *file);
 void loadSpriteFromImage(sf::Image &image, sf::Texture &texture, sf::Sprite &sprite, char *file);
 
 int main(){
-	Maps maps;
+	Map map01;
+	map01.setMap(map01_init());
 
 	// Initialize Window
 	sf::ContextSettings cSettings;
@@ -50,12 +52,12 @@ int main(){
 	#pragma endregion
 
 	Player james("Inzuki");
-		james.loadSpriteSheet("Resources/Images/James.png");
-		james.createAnim("walk_down",  0,   4, 32, 87, 200);
-		james.createAnim("walk_up",    87,  4, 32, 87, 200);
-		james.createAnim("walk_right", 174, 4, 32, 87, 200);
-		james.createAnim("walk_left",  261, 4, 32, 87, 200);
-		james.setAnim("walk_down");
+	james.loadSpriteSheet("Resources/Images/James.png");
+	james.createAnim("walk_down",  0,   4, 32, 87, 200);
+	james.createAnim("walk_up",    87,  4, 32, 87, 200);
+	james.createAnim("walk_right", 174, 4, 32, 87, 200);
+	james.createAnim("walk_left",  261, 4, 32, 87, 200);
+	james.setAnim("walk_down");
 
 	bool necroBook = false;
 
@@ -106,15 +108,13 @@ int main(){
 		window.clear();
 		window.draw(map1);
 		
-		 for(std::vector<std::vector<int>>::size_type y = 0; y < maps.getMap(1).size(); y++){
-			for(std::vector<std::vector<int>>::size_type x = 0; x < maps.getMap(1)[y].size(); x++){
-				if(maps.getMap(1)[y][x] == 0){
-					tile.setPosition((float)x * 50, 140 + ((float)y * 50));
-					window.draw(tile);
-				}else if(maps.getMap(1)[y][x] == 1){
-					rock.setPosition((float)x * 50, 140 + ((float)y * 50));
-					window.draw(rock);
-				}
+		for(std::vector<std::vector<int>>::size_type i = 0; i < map01.getMap().size(); i++){
+			if(map01.getMap()[i].type == 0){
+				tile.setPosition((float)map01.getMap()[i].x * 50, 140 + ((float)map01.getMap()[i].y * 50));
+				window.draw(tile);
+			}else if(map01.getMap()[i].type == 1){
+				rock.setPosition((float)map01.getMap()[i].x * 50, 140 + ((float)map01.getMap()[i].y * 50));
+				window.draw(rock);
 			}
 		}
 		

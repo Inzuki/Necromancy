@@ -137,11 +137,12 @@
   <ItemGroup>
     <ClCompile Include="gross lighting.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Maps.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="networked_main.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Maps.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
